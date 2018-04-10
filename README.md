@@ -120,5 +120,25 @@ Android开发：实时处理摄像头预览帧视频------浅析PreviewCallback,
 https://blog.csdn.net/yanzi1225627/article/details/8605061
 
 
+捕捉摄像头的视频进行像素识别，通过onPreviewFrame获得相机数据<br>
+
+如何接受到Camera中的数据：<br>
+1、	得到了自己定义的surfaceView，通过surfaceView的getHolder()方法得到SurfaceHolder<br>
+2、	初始化Camera，得到Camera对象，调用setPreviewDisplay(SurfaceHolder); 将画面开始在surfaceView中显示<br>
+3、	整个背景都是相机图画，我们要截取一块作为识别区域。开启捕捉指定区域的CaptureActivityHandler。在这里开启restartPreviewAndDecode();用于通知相机的onPreviewFrame中data数据要发到哪个handler中。这时定义PreviewCallback类继Camera.PreviewCallback<br>
+重写onPreviewFrame方法，向DecodeHandler中的Handler发送相机data数据<br>
+4、	在CaptureActivityHandler中开启一个线程，将接收到的UIActivity传给这个线程，开始解析数据<br>
+5、	在线程中使用CountDownLatch(1);等待并发完成。并又起了一个线程，用于<br>
+```
+        Looper.prepare();
+        handler = new DecodeHandler(activity, hints);
+```
+6、DecodeHandler是用了通过handlerMessage接收onPreviewFrame传来的信息，真正解析的线程。（实际上就是解析线程和照相机线程之间进行通信）获取byte[] data 转成取得灰度图。将灰度图转成BinaryBitmap解码。最终将解析的结果直接通过handler发给UI线程<br>
+首先定义一个类实现Camera.PreviewCallback接口，然后在它的onPreviewFrame(byte[] data, Camera camera)方法中即可接收到每一帧的预览数据，也就是参数data。 <br>
+然后使用setPreviewCallback()、setOneShotPreviewCallback或setPreviewCallbackWithBuffer()注册回调接口，<br>
+
+在onPreviewFrame方法中将获取到的图片信息发送给DecodeHandler的handlerMessage，在这里调用解码算法，并将最后的解码结果通过message.sendToTarget();发送给UI线程。<br>
+https://blog.csdn.net/u012950099/article/details/51804506<br>
+二维码识别开源项目zxing的使用和源码分析<br>
 
 
