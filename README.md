@@ -53,11 +53,12 @@ protected void onCreate(@Nullable Bundle savedInstanceState) {
 TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
         Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.9f);
 animation.setDuration(4500);
-animation.setRepeatCount(-1);
+animation.setRepeatCount(-1);//-1表示不限制次数(直到过期),
 animation.setRepeatMode(Animation.RESTART);
 scanLine.startAnimation(animation);
 ```
 平移动画TranslateAnimation，继承父类	Animation<br>
+
 构造方法<br>
 ```Java
 public TranslateAnimation(int fromXType, float fromXValue, int toXType, float toXValue,
