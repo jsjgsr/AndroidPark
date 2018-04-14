@@ -12,7 +12,7 @@
 
 ### 扫描二维码的实现
 #### 1、	二维码扫描布局：
-是一个RelativeLayout，一共包括三部分，第一部分是扫描区域，实现SurfaceView，他是一个正方形，用于提示用户将二维码对准这个区域就可以扫描，一部分是周围区域，周围区域分为四部分，上下左右包围surfaceview。最后一部分是capture_scan_line。用于扫描的时候在surfaceview中上下移动。<br>
+是一个RelativeLayout，一共包括三部分，第一部分是扫描区域，实现SurfaceView接口，他是一个正方形，用于提示用户将二维码对准这个区域就可以扫描，一部分是周围区域，周围区域分为四部分，上下左右包围surfaceview。最后一部分是capture_scan_line。用于扫描的时候在surfaceview中上下移动。<br>
 ##### 这里要提一下android动画：<br>
 动画包括：帧动画（Frame Animation）和补间动画（Tweened Animation）<br>
 第一种：帧动画：帧动画是最容易实现的一种动画，这种动画更多的依赖于完善的UI资源，他的原理就是将一张张单独的图片连贯的进行播放，就是将连续的图片轮番显示：
